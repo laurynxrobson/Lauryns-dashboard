@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { plaidApi, type PlaidAccount, type PlaidTransaction } from '../lib/api'
+import { stitchApi, type BankAccount, type BankTransaction } from '../lib/api'
 
 export interface SavingsGoal {
   id: string
@@ -12,8 +12,8 @@ export interface SavingsGoal {
 }
 
 interface FinanceStore {
-  accounts: PlaidAccount[]
-  transactions: PlaidTransaction[]
+  accounts: BankAccount[]
+  transactions: BankTransaction[]
   goals: SavingsGoal[]
   connected: boolean
   isMock: boolean
@@ -21,9 +21,9 @@ interface FinanceStore {
   lastSynced: string | null
   error: string | null
 
-  // Plaid
+  // Stitch
   checkConnection: () => Promise<void>
-  connectPlaid: (publicToken: string) => Promise<void>
+  connectWithCode: (code: string) => Promise<void>
   syncFinanceData: () => Promise<void>
 
   // Goals (client-side only)
@@ -35,8 +35,8 @@ interface FinanceStore {
 function uid() { return Math.random().toString(36).slice(2, 10) }
 
 const DEFAULT_GOALS: SavingsGoal[] = [
-  { id: 'g1', name: 'Emergency Fund', targetAmount: 10000, currentAmount: 3200, color: '#4ADE80' },
-  { id: 'g2', name: 'Vacation',        targetAmount: 3000,  currentAmount: 850,  deadline: '2026-08-01', color: '#60A5FA' },
+  { id: 'g1', name: 'Emergency Fund',  targetAmount: 50000, currentAmount: 18200, color: '#4ADE80' },
+  { id: 'g2', name: 'Holiday — Bali',  targetAmount: 25000, currentAmount: 7500,  deadline: '2026-09-01', color: '#60A5FA' },
 ]
 
 export const useFinanceStore = create<FinanceStore>()(
@@ -53,7 +53,7 @@ export const useFinanceStore = create<FinanceStore>()(
 
       checkConnection: async () => {
         try {
-          const { connected, mock } = await plaidApi.getConnectionStatus()
+          const { connected, mock } = await stitchApi.getConnectionStatus()
           set({ connected, isMock: mock })
           if (connected && get().accounts.length === 0) {
             await get().syncFinanceData()
@@ -63,13 +63,13 @@ export const useFinanceStore = create<FinanceStore>()(
         }
       },
 
-      connectPlaid: async (publicToken) => {
+      connectWithCode: async (code) => {
         set({ isLoading: true, error: null })
         try {
-          await plaidApi.exchangeToken(publicToken)
+          await stitchApi.exchangeCode(code)
           set({ connected: true })
           await get().syncFinanceData()
-        } catch (err) {
+        } catch {
           set({ error: 'Failed to connect bank account.' })
         } finally {
           set({ isLoading: false })
@@ -80,11 +80,11 @@ export const useFinanceStore = create<FinanceStore>()(
         set({ isLoading: true, error: null })
         try {
           const [{ accounts }, { transactions }] = await Promise.all([
-            plaidApi.getAccounts(),
-            plaidApi.getTransactions(),
+            stitchApi.getAccounts(),
+            stitchApi.getTransactions(),
           ])
           set({ accounts, transactions, lastSynced: new Date().toISOString() })
-        } catch (err) {
+        } catch {
           set({ error: 'Failed to sync financial data.' })
         } finally {
           set({ isLoading: false })

@@ -25,7 +25,7 @@ export default function SavingsGoalCard({ goal }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-border p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-start justify-between mb-2">
         <div>
           <div className="text-sm font-semibold text-text-primary">{goal.name}</div>
@@ -62,7 +62,7 @@ export default function SavingsGoalCard({ goal }: Props) {
         <div>
           {editing ? (
             <div className="flex items-center gap-1">
-              <span className="text-xs text-text-secondary">$</span>
+              <span className="text-xs text-text-secondary">R</span>
               <input
                 autoFocus
                 type="number"
@@ -81,17 +81,17 @@ export default function SavingsGoalCard({ goal }: Props) {
               style={{ color: goal.color }}
               title="Click to update saved amount"
             >
-              ${goal.currentAmount.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+              R{goal.currentAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0 })}
             </button>
           )}
           <span className="text-xs text-text-secondary"> saved</span>
         </div>
         <div className="text-right">
           <div className="text-sm font-semibold text-text-primary">
-            ${goal.targetAmount.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+            R{goal.targetAmount.toLocaleString('en-ZA', { minimumFractionDigits: 0 })}
           </div>
           <div className="text-xs text-text-secondary">
-            ${remaining.toLocaleString('en-US', { minimumFractionDigits: 0 })} to go · {pct.toFixed(0)}%
+            R{remaining.toLocaleString('en-ZA', { minimumFractionDigits: 0 })} to go · {pct.toFixed(0)}%
           </div>
         </div>
       </div>

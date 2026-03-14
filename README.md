@@ -20,18 +20,20 @@ A high-security, unified personal dashboard for habits, finances, and fitness. N
 - **Workout Library** — Log exercises, sets, reps, and weight per session
 - **Recommendation engine** — Rule-based workout suggestions per readiness tier
 
-### Phase 3 ✅ — Plaid Financial Sync & Savings Dashboard
-- **Plaid Link** — Connect any bank account in sandbox or production
-- **Account balances** — Live checking and savings balances
+### Phase 3 ✅ — Stitch Financial Sync & Savings Dashboard (South African banks)
+- **Stitch Open Finance** — Connects Investec, Discovery Bank, Capitec, FNB, Standard Bank, Nedbank, Absa, TymeBank
+- **ZAR currency** — All balances and transactions displayed in South African Rand (R)
+- **Account balances** — Live bank account balances per institution
 - **Transaction feed** — Categorised transactions with merchant names
 - **Spending breakdown** — Visual category bars (Food, Transport, Entertainment, etc.)
 - **Savings Goals** — Set targets with deadlines and track progress
 
-### Phase 4 ✅ — AI-driven Coaching (Claude Opus 4.6)
+### Phase 4 ✅ — AI-driven Coaching (Claude Opus 4.6) + Dark Mode
 - **AI Advisor** — Chat interface powered by Claude Opus 4.6 with adaptive thinking
 - **Live context** — Health metrics, workout history, and habits injected into every prompt
 - **Streaming** — Real-time response rendering via SSE
 - **Suggested prompts** — Pre-built coaching questions for quick interaction
+- **Dark mode** — System-wide dark/light toggle in the sidebar (persisted, no flash on load)
 
 ---
 
@@ -63,17 +65,16 @@ The server runs in **mock mode** automatically if no API keys are set — the UI
 
 | Variable | Where to get it | Required for |
 |---|---|---|
-| `PLAID_CLIENT_ID` | [dashboard.plaid.com](https://dashboard.plaid.com) (free sandbox) | Real bank sync |
-| `PLAID_SECRET` | Plaid dashboard → Team → Keys → Sandbox secret | Real bank sync |
-| `PLAID_ENV` | `sandbox` (default) or `development` | Real bank sync |
+| `STITCH_CLIENT_ID` | [stitch.money/developers](https://stitch.money/developers) (free sandbox) | Real SA bank sync |
+| `STITCH_CLIENT_SECRET` | Stitch dashboard → App Settings → Credentials | Real SA bank sync |
+| `STITCH_REDIRECT_URI` | Must match a URI registered in your Stitch app | Real SA bank sync |
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) | Real AI responses |
 
-> Without keys, the server returns realistic mock data for Plaid and a canned response for AI — everything still renders correctly.
+> Without keys, the server runs in **demo mode** — realistic mock data for Investec, Discovery Bank & Capitec is returned automatically. The full UI is usable without any API keys.
 
-#### Plaid Sandbox Test Credentials
-When using sandbox mode, use these test credentials in the Plaid Link flow:
-- **Username:** `user_good`
-- **Password:** `pass_good`
+#### Stitch Sandbox — Supported Banks
+Stitch supports all major South African banks:
+**Investec** · **Discovery Bank** · **Capitec** · **FNB** · **Standard Bank** · **Nedbank** · **Absa** · **TymeBank** · **African Bank**
 
 ### 2. Web App
 
@@ -124,7 +125,7 @@ EXPO_PUBLIC_API_URL=http://192.168.1.XXX:3001
 | Navigation | React Router v6 | React Navigation v6 (bottom tabs) | — |
 | Auth | Mock OAuth shell | expo-local-authentication (Face ID) | — |
 | Health | — | react-native-health (HealthKit) | — |
-| Finance | react-plaid-link | Server API proxy | plaid (Node SDK) |
+| Finance | Stitch OAuth redirect | Server API proxy | stitch.money GraphQL API |
 | AI | SSE streaming | SSE streaming | @anthropic-ai/sdk (Opus 4.6) |
 
 ---

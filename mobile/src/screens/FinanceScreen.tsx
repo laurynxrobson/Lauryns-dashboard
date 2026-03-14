@@ -8,34 +8,50 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { format, parseISO } from 'date-fns'
-import { useFinanceStore, type PlaidTransaction } from '../store/financeStore'
+import { useFinanceStore, type BankTransaction } from '../store/financeStore'
 
-// ── Category helpers ──────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const CATEGORY_ICONS: Record<string, string> = {
-  FOOD_AND_DRINK: '🍽️',
-  TRANSPORTATION: '🚗',
-  ENTERTAINMENT: '🎬',
+  FOOD_AND_DRINK:      '🍽️',
+  TRANSPORTATION:      '🚗',
+  ENTERTAINMENT:       '🎬',
   GENERAL_MERCHANDISE: '🛍️',
-  PERSONAL_CARE: '💪',
-  RENT_AND_UTILITIES: '🏠',
-  INCOME: '💵',
-  TRAVEL: '✈️',
+  PERSONAL_CARE:       '💪',
+  RENT_AND_UTILITIES:  '🏠',
+  INCOME:              '💵',
+  BANK_FEES:           '🏦',
+  TRAVEL:              '✈️',
 }
 
-function txIcon(tx: PlaidTransaction) {
+const BANK_COLORS: Record<string, string> = {
+  Investec:        '#1E3A5F',
+  'Discovery Bank':'#0066CC',
+  Capitec:         '#01A14A',
+  FNB:             '#C8102E',
+  'Standard Bank': '#003DA5',
+  Nedbank:         '#009A44',
+  Absa:            '#DC0028',
+}
+
+function txIcon(tx: BankTransaction) {
   return CATEGORY_ICONS[tx.personal_finance_category?.primary ?? ''] ?? '💳'
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+function zarFmt(amount: number, decimals = 2) {
+  return `R${Math.abs(amount).toLocaleString('en-ZA', { minimumFractionDigits: decimals })}`
+}
+
+// ── Screen ────────────────────────────────────────────────────────────────────
 
 export default function FinanceScreen() {
-  const { accounts, transactions, goals, connected, isMock, isLoading, lastSynced, error, checkConnection, syncFinanceData } =
-    useFinanceStore()
+  const {
+    accounts, transactions, goals,
+    connected, isMock, isLoading, lastSynced, error,
+    checkConnection, syncFinanceData,
+  } = useFinanceStore()
 
-  useEffect(() => {
-    checkConnection()
-  }, [])
+  useEffect(() => { checkConnection() }, [])
 
   const netWorth = accounts.reduce((s, a) => s + (a.balances.current ?? 0), 0)
   const thisMonth = format(new Date(), 'yyyy-MM')
@@ -59,7 +75,7 @@ export default function FinanceScreen() {
             <Text className="text-2xl font-bold text-gray-900">Finance</Text>
             {lastSynced && (
               <Text className="text-xs text-gray-400 mt-0.5">
-                {isMock ? 'Demo · ' : ''}Synced {format(parseISO(lastSynced), 'h:mm a')}
+                {isMock ? 'Demo · ' : 'Stitch · '}Synced {format(parseISO(lastSynced), 'h:mm a')}
               </Text>
             )}
           </View>
@@ -76,18 +92,19 @@ export default function FinanceScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Error / Mock banner */}
+        {/* Banners */}
         {error ? (
           <View className="mx-5 mb-4 bg-red-50 border border-red-200 rounded-2xl px-4 py-3">
             <Text className="text-sm text-red-700">{error}</Text>
-            <Text className="text-xs text-red-500 mt-1">
-              Start the server: cd server && npm run dev
+            <Text className="text-xs text-red-400 mt-1">
+              Start: cd server &amp;&amp; npm run dev
             </Text>
           </View>
         ) : isMock ? (
           <View className="mx-5 mb-4 bg-blue-50 border border-blue-200 rounded-2xl px-4 py-2.5">
             <Text className="text-xs text-blue-700">
-              <Text className="font-semibold">Demo data</Text> — connect your bank via the web app.
+              <Text className="font-semibold">Demo data</Text> — Investec, Discovery Bank &amp;
+              Capitec. Connect via the web app to link real accounts.
             </Text>
           </View>
         ) : null}
@@ -97,10 +114,10 @@ export default function FinanceScreen() {
           <View className="mx-5 bg-white rounded-2xl p-5 mb-5 shadow-sm border border-gray-100">
             <Text className="text-xs text-gray-400 uppercase tracking-widest mb-1">Net Worth</Text>
             <Text className="text-4xl font-bold text-gray-900">
-              ${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              {zarFmt(netWorth)}
             </Text>
             <Text className="text-sm text-gray-400 mt-1">
-              Spent this month: ${monthlySpending.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              Spent this month: {zarFmt(monthlySpending)}
             </Text>
           </View>
         )}
@@ -111,19 +128,25 @@ export default function FinanceScreen() {
             <SectionLabel>Accounts</SectionLabel>
             {accounts.map((a) => {
               const balance = a.balances.available ?? a.balances.current ?? 0
+              const bankColor = (a.bank && BANK_COLORS[a.bank]) ?? '#6B7280'
               return (
                 <View
                   key={a.account_id}
                   className="bg-white rounded-2xl px-4 py-3.5 mb-2 border border-gray-100 shadow-sm flex-row items-center justify-between"
                 >
-                  <View>
-                    <Text className="text-sm font-semibold text-gray-900">{a.name}</Text>
-                    <Text className="text-xs text-gray-400 capitalize">
-                      {a.subtype ?? a.type}{a.mask ? ` ···· ${a.mask}` : ''}
+                  <View className="flex-1 mr-3">
+                    <View className="flex-row items-center gap-2 mb-0.5">
+                      <View className="w-2 h-2 rounded-full" style={{ backgroundColor: bankColor }} />
+                      <Text className="text-sm font-semibold text-gray-900 flex-1" numberOfLines={1}>
+                        {a.name}
+                      </Text>
+                    </View>
+                    <Text className="text-xs text-gray-400 capitalize ml-4">
+                      {a.bank ? `${a.bank} · ` : ''}{a.subtype ?? a.type}{a.mask ? ` ···· ${a.mask}` : ''}
                     </Text>
                   </View>
                   <Text className={`text-base font-bold ${balance < 0 ? 'text-red-500' : 'text-gray-900'}`}>
-                    {balance < 0 ? '−' : ''}${Math.abs(balance).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    {zarFmt(balance)}
                   </Text>
                 </View>
               )
@@ -150,10 +173,10 @@ export default function FinanceScreen() {
                 </View>
                 <View className="flex-row justify-between">
                   <Text className="text-xs font-bold" style={{ color: g.color }}>
-                    ${g.currentAmount.toLocaleString('en-US', { minimumFractionDigits: 0 })} saved
+                    {zarFmt(g.currentAmount, 0)} saved
                   </Text>
                   <Text className="text-xs text-gray-400">
-                    of ${g.targetAmount.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+                    of {zarFmt(g.targetAmount, 0)}
                   </Text>
                 </View>
               </View>
@@ -166,7 +189,7 @@ export default function FinanceScreen() {
           <View className="px-5">
             <SectionLabel>Recent Transactions</SectionLabel>
             <View className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              {transactions.slice(0, 10).map((tx, i) => {
+              {transactions.slice(0, 12).map((tx, i) => {
                 const isIncome = tx.personal_finance_category?.primary === 'INCOME' || tx.amount < 0
                 return (
                   <View
@@ -175,17 +198,15 @@ export default function FinanceScreen() {
                   >
                     <Text className="text-xl mr-3">{txIcon(tx)}</Text>
                     <View className="flex-1">
-                      <Text className="text-sm font-medium text-gray-900 truncate">
+                      <Text className="text-sm font-medium text-gray-900" numberOfLines={1}>
                         {tx.merchant_name ?? tx.name}
                       </Text>
                       <Text className="text-xs text-gray-400">
                         {format(parseISO(tx.date), 'MMM d')}
                       </Text>
                     </View>
-                    <Text
-                      className={`text-sm font-semibold ${isIncome ? 'text-green-600' : 'text-gray-900'}`}
-                    >
-                      {isIncome ? '+' : '−'}${Math.abs(tx.amount).toFixed(2)}
+                    <Text className={`text-sm font-semibold ${isIncome ? 'text-green-600' : 'text-gray-900'}`}>
+                      {isIncome ? '+' : '−'}{zarFmt(tx.amount)}
                     </Text>
                   </View>
                 )
@@ -199,10 +220,10 @@ export default function FinanceScreen() {
           <View className="items-center py-16 px-10">
             <Text className="text-5xl mb-4">🏦</Text>
             <Text className="text-base font-semibold text-gray-900 mb-2 text-center">
-              Connect Your Bank
+              Connect Investec, Discovery or Capitec
             </Text>
             <Text className="text-sm text-gray-400 text-center leading-5">
-              Open the web app and navigate to Finance to connect your bank via Plaid. Data will appear here automatically.
+              Open the web app → Finance → Connect Bank. Your accounts will appear here automatically.
             </Text>
           </View>
         )}

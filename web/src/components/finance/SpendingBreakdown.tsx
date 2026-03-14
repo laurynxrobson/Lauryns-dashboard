@@ -1,21 +1,23 @@
-import type { PlaidTransaction } from '../../lib/api'
+import type { BankTransaction } from '../../lib/api'
 
 const CATEGORY_CONFIG: Record<string, { label: string; icon: string; color: string }> = {
-  FOOD_AND_DRINK:      { label: 'Food & Drink',   icon: '🍽️', color: '#FB923C' },
-  TRANSPORTATION:      { label: 'Transport',       icon: '🚗', color: '#60A5FA' },
-  ENTERTAINMENT:       { label: 'Entertainment',   icon: '🎬', color: '#A78BFA' },
-  GENERAL_MERCHANDISE: { label: 'Shopping',        icon: '🛍️', color: '#F472B6' },
+  FOOD_AND_DRINK:      { label: 'Food & Drink',    icon: '🍽️', color: '#FB923C' },
+  TRANSPORTATION:      { label: 'Transport',        icon: '🚗', color: '#60A5FA' },
+  ENTERTAINMENT:       { label: 'Entertainment',    icon: '🎬', color: '#A78BFA' },
+  GENERAL_MERCHANDISE: { label: 'Shopping',         icon: '🛍️', color: '#F472B6' },
   PERSONAL_CARE:       { label: 'Health & Fitness', icon: '💪', color: '#4ADE80' },
-  RENT_AND_UTILITIES:  { label: 'Housing',         icon: '🏠', color: '#34D399' },
-  TRAVEL:              { label: 'Travel',           icon: '✈️', color: '#FCD34D' },
+  RENT_AND_UTILITIES:  { label: 'Housing',          icon: '🏠', color: '#34D399' },
+  BANK_FEES:           { label: 'Bank Fees',        icon: '🏦', color: '#9CA3AF' },
+  TRAVEL:              { label: 'Travel',            icon: '✈️', color: '#FCD34D' },
+  MEDICAL:             { label: 'Medical',           icon: '⚕️', color: '#6EE7B7' },
 }
 
 interface Props {
-  transactions: PlaidTransaction[]
+  transactions: BankTransaction[]
 }
 
 export default function SpendingBreakdown({ transactions }: Props) {
-  // Sum spending (positive amounts) by primary category, exclude income
+  // Sum spending (positive amounts = debits) by primary category, exclude income
   const totals: Record<string, number> = {}
   for (const tx of transactions) {
     const primary = tx.personal_finance_category?.primary ?? 'OTHER'
@@ -51,8 +53,8 @@ export default function SpendingBreakdown({ transactions }: Props) {
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-text-secondary">{pct.toFixed(0)}%</span>
-                <span className="text-sm font-semibold text-text-primary w-20 text-right">
-                  ${amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                <span className="text-sm font-semibold text-text-primary w-24 text-right">
+                  R{amount.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
@@ -68,7 +70,7 @@ export default function SpendingBreakdown({ transactions }: Props) {
       <div className="flex justify-between pt-2 border-t border-border">
         <span className="text-xs text-text-secondary font-medium">Total spending</span>
         <span className="text-sm font-bold text-text-primary">
-          ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+          R{grandTotal.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}
         </span>
       </div>
     </div>

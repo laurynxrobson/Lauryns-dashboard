@@ -69,7 +69,7 @@ export default function ChatBubble({ message, isStreaming }: Props) {
         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
           isUser
             ? 'bg-text-primary text-white rounded-tr-sm'
-            : 'bg-white border border-border text-text-primary rounded-tl-sm'
+            : 'bg-card border border-border text-text-primary rounded-tl-sm'
         }`}
       >
         {isUser ? (

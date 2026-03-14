@@ -179,7 +179,7 @@ export default function AIAdvisorPage() {
                   <button
                     key={p}
                     onClick={() => sendMessage(p)}
-                    className="w-full text-left text-sm text-text-primary bg-white border border-border rounded-xl px-4 py-3 hover:border-gray-300 hover:bg-muted transition-colors"
+                    className="w-full text-left text-sm text-text-primary bg-card border border-border rounded-xl px-4 py-3 hover:border-gray-300 hover:bg-muted transition-colors"
                   >
                     {p}
                   </button>
@@ -206,7 +206,7 @@ export default function AIAdvisorPage() {
             <textarea
               ref={textareaRef}
               rows={1}
-              className="flex-1 border border-border rounded-xl px-4 py-3 text-sm text-text-primary resize-none focus:outline-none focus:border-gray-400 bg-white leading-relaxed"
+              className="flex-1 border border-border rounded-xl px-4 py-3 text-sm text-text-primary resize-none focus:outline-none focus:border-gray-400 bg-surface leading-relaxed"
               placeholder="Ask about training, recovery, nutrition…"
               value={input}
               onChange={(e) => {

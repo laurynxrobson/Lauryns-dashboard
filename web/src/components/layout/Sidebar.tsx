@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { useThemeStore } from '../../store/themeStore'
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', icon: '⊞', path: '/dashboard' },
-  { label: 'Habits',    icon: '◎', path: '/dashboard' },
-  { label: 'Health',    icon: '〰️', path: '/health' },
-  { label: 'Workouts',  icon: '🏋️', path: '/workouts' },
-  { label: 'Finance',   icon: '💰', path: '/finance' },
+  { label: 'Dashboard',  icon: '⊞', path: '/dashboard' },
+  { label: 'Habits',     icon: '◎', path: '/dashboard' },
+  { label: 'Health',     icon: '〰️', path: '/health' },
+  { label: 'Workouts',   icon: '🏋️', path: '/workouts' },
+  { label: 'Finance',    icon: '💰', path: '/finance' },
   { label: 'AI Advisor', icon: '✦', path: '/ai' },
 ]
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const { user, logout } = useAuthStore()
+  const { isDark, toggleDark } = useThemeStore()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -64,7 +66,18 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-border p-3">
+      <div className="border-t border-border p-3 space-y-1">
+        {/* Dark mode toggle */}
+        <button
+          onClick={toggleDark}
+          className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-sm text-text-secondary hover:bg-border hover:text-text-primary transition-colors"
+          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          <span>{isDark ? '☀️' : '🌙'}</span>
+          {!collapsed && <span>{isDark ? 'Light mode' : 'Dark mode'}</span>}
+        </button>
+
+        {/* Sign out */}
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 w-full px-2 py-1.5 rounded text-sm text-text-secondary hover:bg-border hover:text-text-primary transition-colors"

@@ -1,27 +1,27 @@
 import { format, parseISO } from 'date-fns'
-import type { PlaidTransaction } from '../../lib/api'
+import type { BankTransaction } from '../../lib/api'
 
 const CATEGORY_ICONS: Record<string, string> = {
-  FOOD_AND_DRINK: '🍽️',
-  TRANSPORTATION: '🚗',
-  ENTERTAINMENT: '🎬',
+  FOOD_AND_DRINK:      '🍽️',
+  TRANSPORTATION:      '🚗',
+  ENTERTAINMENT:       '🎬',
   GENERAL_MERCHANDISE: '🛍️',
-  PERSONAL_CARE: '💪',
-  RENT_AND_UTILITIES: '🏠',
-  INCOME: '💵',
-  TRANSFER_IN: '↩️',
-  TRANSFER_OUT: '↪️',
-  LOAN_PAYMENTS: '🏦',
-  MEDICAL: '⚕️',
-  TRAVEL: '✈️',
+  PERSONAL_CARE:       '💪',
+  RENT_AND_UTILITIES:  '🏠',
+  INCOME:              '💵',
+  BANK_FEES:           '🏦',
+  TRANSFER_IN:         '↩️',
+  TRANSFER_OUT:        '↪️',
+  MEDICAL:             '⚕️',
+  TRAVEL:              '✈️',
 }
 
-function categoryIcon(tx: PlaidTransaction): string {
+function categoryIcon(tx: BankTransaction): string {
   const primary = tx.personal_finance_category?.primary ?? ''
   return CATEGORY_ICONS[primary] ?? '💳'
 }
 
-function categoryLabel(tx: PlaidTransaction): string {
+function categoryLabel(tx: BankTransaction): string {
   const raw = tx.personal_finance_category?.detailed ?? tx.personal_finance_category?.primary ?? ''
   return raw
     .replace(/_/g, ' ')
@@ -33,7 +33,7 @@ function categoryLabel(tx: PlaidTransaction): string {
 }
 
 interface Props {
-  transaction: PlaidTransaction
+  transaction: BankTransaction
 }
 
 export default function TransactionRow({ transaction: tx }: Props) {
@@ -54,7 +54,7 @@ export default function TransactionRow({ transaction: tx }: Props) {
         </div>
       </div>
       <div className={`text-sm font-semibold flex-shrink-0 ${isIncome ? 'text-green-600' : 'text-text-primary'}`}>
-        {isIncome ? '+' : '−'}${displayAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+        {isIncome ? '+' : '−'}R{displayAmount.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}
       </div>
     </div>
   )

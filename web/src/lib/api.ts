@@ -1,6 +1,11 @@
 /**
  * api.ts — typed client for the Express backend (localhost:3001)
- * All calls fall through to mock data when the server is unreachable.
+ *
+ * Banking: Stitch Open Finance (stitch.money)
+ *   Supports Investec, Discovery Bank, Capitec, FNB, Standard Bank,
+ *   Nedbank, Absa, TymeBank — all South African banks
+ *
+ * AI: Claude Opus 4.6 via @anthropic-ai/sdk streaming SSE
  */
 
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3001'
@@ -21,12 +26,13 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>
 }
 
-// ── Plaid ─────────────────────────────────────────────────────────────────────
+// ── Stitch Open Finance ───────────────────────────────────────────────────────
 
-export interface PlaidAccount {
+export interface BankAccount {
   account_id: string
   name: string
   official_name: string | null
+  bank?: string
   mask: string | null
   type: string
   subtype: string | null
@@ -37,31 +43,31 @@ export interface PlaidAccount {
   }
 }
 
-export interface PlaidTransaction {
+export interface BankTransaction {
   transaction_id: string
   account_id: string
   name: string
   merchant_name: string | null
   amount: number
   date: string
-  category: string[] | null
   personal_finance_category: {
     primary: string
     detailed: string
-    confidence_level: string
   } | null
   pending: boolean
-  iso_currency_code: string | null
 }
 
-export const plaidApi = {
-  getLinkToken: () => get<{ link_token: string; expiration: string }>('/api/plaid/link-token'),
-  exchangeToken: (public_token: string) =>
-    post<{ connected: boolean }>('/api/plaid/exchange-token', { public_token }),
-  getConnectionStatus: () => get<{ connected: boolean; mock: boolean }>('/api/plaid/connection-status'),
-  getAccounts: () => get<{ accounts: PlaidAccount[] }>('/api/plaid/accounts'),
+export const stitchApi = {
+  getLinkUrl: () =>
+    get<{ url: string | null; mock: boolean }>('/api/stitch/link-url'),
+  exchangeCode: (code: string) =>
+    post<{ connected: boolean }>('/api/stitch/callback', { code }),
+  getConnectionStatus: () =>
+    get<{ connected: boolean; mock: boolean }>('/api/stitch/connection-status'),
+  getAccounts: () =>
+    get<{ accounts: BankAccount[] }>('/api/stitch/accounts'),
   getTransactions: () =>
-    get<{ transactions: PlaidTransaction[]; total_transactions: number }>('/api/plaid/transactions'),
+    get<{ transactions: BankTransaction[]; total_transactions: number }>('/api/stitch/transactions'),
 }
 
 // ── AI Advisor ────────────────────────────────────────────────────────────────

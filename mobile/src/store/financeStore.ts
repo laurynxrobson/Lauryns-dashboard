@@ -4,10 +4,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3001'
 
-export interface PlaidAccount {
+export interface BankAccount {
   account_id: string
   name: string
   official_name: string | null
+  bank?: string
   mask: string | null
   type: string
   subtype: string | null
@@ -18,7 +19,7 @@ export interface PlaidAccount {
   }
 }
 
-export interface PlaidTransaction {
+export interface BankTransaction {
   transaction_id: string
   account_id: string
   name: string
@@ -42,8 +43,8 @@ export interface SavingsGoal {
 }
 
 interface FinanceStore {
-  accounts: PlaidAccount[]
-  transactions: PlaidTransaction[]
+  accounts: BankAccount[]
+  transactions: BankTransaction[]
   goals: SavingsGoal[]
   connected: boolean
   isMock: boolean
@@ -53,12 +54,11 @@ interface FinanceStore {
 
   checkConnection: () => Promise<void>
   syncFinanceData: () => Promise<void>
-  updateGoalAmount: (id: string, amount: number) => void
 }
 
 const DEFAULT_GOALS: SavingsGoal[] = [
-  { id: 'g1', name: 'Emergency Fund', targetAmount: 10000, currentAmount: 3200, color: '#4ADE80' },
-  { id: 'g2', name: 'Vacation', targetAmount: 3000, currentAmount: 850, deadline: '2026-08-01', color: '#60A5FA' },
+  { id: 'g1', name: 'Emergency Fund', targetAmount: 50000, currentAmount: 18200, color: '#4ADE80' },
+  { id: 'g2', name: 'Holiday — Bali', targetAmount: 25000, currentAmount: 7500, deadline: '2026-09-01', color: '#60A5FA' },
 ]
 
 export const useFinanceStore = create<FinanceStore>()(
@@ -75,7 +75,7 @@ export const useFinanceStore = create<FinanceStore>()(
 
       checkConnection: async () => {
         try {
-          const res = await fetch(`${API_BASE}/api/plaid/connection-status`)
+          const res = await fetch(`${API_BASE}/api/stitch/connection-status`)
           if (!res.ok) throw new Error('Server unreachable')
           const { connected, mock } = await res.json()
           set({ connected, isMock: mock, error: null })
@@ -91,8 +91,8 @@ export const useFinanceStore = create<FinanceStore>()(
         set({ isLoading: true, error: null })
         try {
           const [accRes, txRes] = await Promise.all([
-            fetch(`${API_BASE}/api/plaid/accounts`),
-            fetch(`${API_BASE}/api/plaid/transactions`),
+            fetch(`${API_BASE}/api/stitch/accounts`),
+            fetch(`${API_BASE}/api/stitch/transactions`),
           ])
           if (!accRes.ok || !txRes.ok) throw new Error('Fetch failed')
           const { accounts } = await accRes.json()
@@ -104,13 +104,6 @@ export const useFinanceStore = create<FinanceStore>()(
           set({ isLoading: false })
         }
       },
-
-      updateGoalAmount: (id, amount) =>
-        set((s) => ({
-          goals: s.goals.map((g) =>
-            g.id === id ? { ...g, currentAmount: Math.max(0, amount) } : g
-          ),
-        })),
     }),
     {
       name: 'mobile-finance-store',
