@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Light mode variables (default) ─────────────────────────────────────── */
+:root {
+  --color-surface:        #FFFFFF;
+  --color-muted:          #F7F7F7;
+  --color-card:           #FFFFFF;
+  --color-border:         #E5E5E5;
+  --color-text-primary:   #1A1A1A;
+  --color-text-secondary: #6B6B6B;
+  --color-heatmap-empty:  #EBEDF0;
+}
+
+/* ── Dark mode variables ─────────────────────────────────────────────────── */
+.dark {
+  --color-surface:        #0F0F0F;
+  --color-muted:          #1C1C1E;
+  --color-card:           #1C1C1E;
+  --color-border:         #2C2C2E;
+  --color-text-primary:   #F5F5F7;
+  --color-text-secondary: #8E8E93;
+  --color-heatmap-empty:  #21262D;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply font-sans text-text-primary bg-surface antialiased;
+    margin: 0;
+  }
+
+  /* ── Scrollbar ────────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
+
+  /* ── Input / select dark mode ─────────────────────────────────────────── */
+  input, textarea, select {
+    @apply bg-surface text-text-primary border-border;
+  }
+
+  /* ── Transitions on theme switch ──────────────────────────────────────── */
+  html {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+}
