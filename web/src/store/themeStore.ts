@@ -26,6 +26,11 @@ export const useThemeStore = create<ThemeStore>()(
         applyClass(get().isDark)
       },
     }),
-    { name: 'theme' }
+    {
+      name: 'theme',
+      onRehydrateStorage: () => (state) => {
+        if (state) applyClass(state.isDark)
+      },
+    }
   )
 )
