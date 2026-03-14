@@ -42,7 +42,7 @@ function renderInline(text: string): React.ReactNode[] {
       parts.push(<strong key={idx++} className="font-semibold">{raw.slice(2, -2)}</strong>)
     } else {
       parts.push(
-        <code key={idx++} className="bg-black/10 text-xs rounded px-1 py-0.5 font-mono">
+        <code key={idx++} className="bg-muted text-xs rounded px-1 py-0.5 font-mono">
           {raw.slice(1, -1)}
         </code>
       )

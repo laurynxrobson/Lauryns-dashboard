@@ -134,21 +134,21 @@ export default function FinancePage() {
 
         {/* Error banner */}
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+          <div className="mb-6 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-600 dark:text-red-400">
             {error}
           </div>
         )}
 
         {/* Demo mode banner */}
         {isMock && !error && (
-          <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
+          <div className="mb-6 bg-blue-500/10 border border-blue-500/30 rounded-xl px-4 py-3 text-sm text-blue-600 dark:text-blue-400">
             <span className="font-semibold">Demo mode</span> — showing sample data for Investec,
             Discovery Bank &amp; Capitec. Add{' '}
-            <code className="text-xs bg-blue-100 px-1 rounded">STITCH_CLIENT_ID</code> to{' '}
-            <code className="text-xs bg-blue-100 px-1 rounded">server/.env</code> to connect your real
+            <code className="text-xs bg-blue-500/10 px-1 rounded">STITCH_CLIENT_ID</code> to{' '}
+            <code className="text-xs bg-blue-500/10 px-1 rounded">server/.env</code> to connect your real
             accounts via{' '}
             <a
-              href="https://stitch.money/developers"
+              href="https://docs.stitch.money/"
               target="_blank"
               rel="noopener noreferrer"
               className="underline"
@@ -337,7 +337,7 @@ export default function FinancePage() {
                       key={c}
                       onClick={() => setGoalDraft((d) => ({ ...d, color: c }))}
                       className={`w-6 h-6 rounded-full transition-transform ${
-                        goalDraft.color === c ? 'scale-125 ring-2 ring-offset-1 ring-gray-400' : ''
+                        goalDraft.color === c ? 'scale-125 ring-2 ring-offset-1 ring-border' : ''
                       }`}
                       style={{ backgroundColor: c }}
                     />

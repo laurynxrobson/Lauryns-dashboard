@@ -24,7 +24,7 @@ export default function HeatmapChart({ completions, accentColor = '#4ADE80' }: H
   }
 
   function getCellColor(level: number): string {
-    if (level === 0) return '#EBEDF0'
+    if (level === 0) return 'var(--color-heatmap-empty)'
     // Use accent color at full opacity
     return accentColor
   }

@@ -173,7 +173,7 @@ export default function WorkoutPage() {
             <input
               autoFocus
               type="text"
-              className="w-full border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary mb-4 focus:outline-none focus:border-gray-400"
+              className="w-full border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary mb-4 focus:outline-none focus:border-text-secondary"
               placeholder={topRec.name}
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -312,7 +312,7 @@ export default function WorkoutPage() {
             <div className="px-5 py-4 border-t border-border flex gap-2">
               <input
                 type="text"
-                className="flex-1 border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-gray-400"
+                className="flex-1 border border-border rounded-xl px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-text-secondary"
                 placeholder="Exercise name…"
                 value={newExercise}
                 onChange={(e) => setNewExercise(e.target.value)}
