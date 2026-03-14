@@ -152,7 +152,7 @@ export default function HealthPage() {
                 type="number"
                 min={0}
                 step={field.key === 'sleepHours' ? 0.1 : 1}
-                className="w-24 text-right border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary bg-muted focus:outline-none focus:border-gray-400"
+                className="w-24 text-right border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary bg-muted focus:outline-none focus:border-text-secondary"
                 placeholder={field.placeholder}
                 value={
                   (draft[field.key] as number | undefined) !== undefined &&
@@ -170,7 +170,7 @@ export default function HealthPage() {
           onClick={handleSave}
           className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
             saved
-              ? 'bg-green-100 text-green-700 border border-green-200'
+              ? 'bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30'
               : 'bg-text-primary text-white hover:opacity-90'
           }`}
         >

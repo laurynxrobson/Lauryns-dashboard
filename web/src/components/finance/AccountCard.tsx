@@ -41,7 +41,7 @@ export default function AccountCard({ account }: Props) {
         </span>
       </div>
       <div
-        className={`text-2xl font-bold mb-1 ${isNegative ? 'text-red-500' : 'text-text-primary'}`}
+        className={`text-2xl font-bold mb-1 ${isNegative ? 'text-red-500 dark:text-red-400' : 'text-text-primary'}`}
       >
         {isNegative ? '−' : ''}{zarFormat(balance)}
       </div>

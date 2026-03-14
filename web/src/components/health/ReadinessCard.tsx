@@ -8,7 +8,7 @@ export default function ReadinessCard() {
 
   return (
     <Link to="/health" className="block no-underline">
-      <div className="rounded-xl border border-border bg-card p-4 hover:border-gray-300 transition-colors cursor-pointer">
+      <div className="rounded-xl border border-border bg-card p-4 hover:border-text-secondary transition-colors cursor-pointer">
         {/* Header row */}
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs text-text-secondary uppercase tracking-wide">

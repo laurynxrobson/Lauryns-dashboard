@@ -53,7 +53,7 @@ export default function TransactionRow({ transaction: tx }: Props) {
           {categoryLabel(tx)} · {format(parseISO(tx.date), 'MMM d')}
         </div>
       </div>
-      <div className={`text-sm font-semibold flex-shrink-0 ${isIncome ? 'text-green-600' : 'text-text-primary'}`}>
+      <div className={`text-sm font-semibold flex-shrink-0 ${isIncome ? 'text-green-600 dark:text-green-400' : 'text-text-primary'}`}>
         {isIncome ? '+' : '−'}R{displayAmount.toLocaleString('en-ZA', { minimumFractionDigits: 2 })}
       </div>
     </div>
