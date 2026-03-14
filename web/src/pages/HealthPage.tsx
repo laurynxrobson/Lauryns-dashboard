@@ -103,7 +103,7 @@ export default function HealthPage() {
                 { label: 'Activity', score: readiness.components.activity, color: '#4ADE80', weight: '20%' },
               ] as const
             ).map((item) => (
-              <div key={item.label} className="bg-white rounded-lg p-3 border border-border">
+              <div key={item.label} className="bg-card rounded-lg p-3 border border-border">
                 <div className="flex justify-between items-baseline mb-1.5">
                   <span className="text-xs text-text-secondary">{item.label}</span>
                   <span className="text-xs text-text-secondary opacity-60">{item.weight}</span>
@@ -137,7 +137,7 @@ export default function HealthPage() {
           {FIELDS.map((field) => (
             <div
               key={field.key}
-              className="flex items-center gap-4 bg-white rounded-xl border border-border px-4 py-3"
+              className="flex items-center gap-4 bg-card rounded-xl border border-border px-4 py-3"
             >
               <span className="text-lg w-7 text-center">{field.icon}</span>
               <label className="flex-1 text-sm text-text-primary font-medium">

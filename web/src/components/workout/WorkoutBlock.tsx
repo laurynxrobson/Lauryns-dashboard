@@ -15,7 +15,7 @@ export default function WorkoutBlock({ workout, accentColor, onOpen, onDelete }:
   const totalSets = workout.exercises.reduce((s, e) => s + e.sets.length, 0)
 
   return (
-    <div className="bg-white rounded-xl border border-border mb-3 overflow-hidden">
+    <div className="bg-card rounded-xl border border-border mb-3 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
         <button

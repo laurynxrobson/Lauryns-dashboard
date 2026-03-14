@@ -163,7 +163,7 @@ export default function WorkoutPage() {
       {/* ── New Workout Modal ─────────────────────────── */}
       {modal.mode === 'new' && (
         <div className="fixed inset-0 bg-black/30 flex items-end sm:items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4 mb-4 sm:mb-0">
+          <div className="bg-card rounded-2xl p-6 w-full max-w-md mx-4 mb-4 sm:mb-0">
             <h2 className="text-base font-bold text-text-primary mb-1">
               Start a Workout
             </h2>
@@ -201,7 +201,7 @@ export default function WorkoutPage() {
       {/* ── Log Modal ────────────────────────────────── */}
       {modal.mode === 'log' && activeWorkout && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col">
+          <div className="bg-card rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col">
             {/* Modal header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <div>
