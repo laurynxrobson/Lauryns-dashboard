@@ -53,11 +53,12 @@ npm run preview     # serve the production build locally
 
 ## Running the iOS App
 
+> **Windows users:** Xcode is Mac-only, so iOS Simulator is not available. Use a physical iPhone with the Expo Go app instead — it works on any OS.
+
 ### Prerequisites
 - Node.js 18+
-- [Expo CLI](https://docs.expo.dev/get-started/installation/) — `npm install -g expo-cli`
-- **Expo Go** app installed on your iPhone (download from the App Store)
-- Or Xcode 15+ with an iOS Simulator configured
+- **Expo Go** app installed on your iPhone (free on the App Store)
+- Your iPhone and Windows PC on the **same Wi-Fi network**
 
 ### Setup & Start
 
@@ -67,17 +68,17 @@ npm install
 npx expo start
 ```
 
-This opens the Expo developer tools in your terminal. Then:
+This opens the Expo developer tools in your terminal and displays a QR code.
 
-- **On a physical iPhone** — scan the QR code with the Camera app or Expo Go
-- **On iOS Simulator** — press `i` in the terminal (requires Xcode)
+**To open on your iPhone:**
+1. Open the Camera app and point it at the QR code
+2. Tap the banner that appears — this launches the app in Expo Go
 
-### Face ID (Simulator)
+> If the QR code doesn't connect, try pressing `w` in the terminal to switch to tunnel mode (`npx expo start --tunnel`), which works even if your PC and phone are on different networks.
 
-To test the Face ID prompt in the iOS Simulator:
+### Face ID
 
-1. Open **Features → Face ID → Enrolled** in the Simulator menu
-2. Use **Features → Face ID → Matching Face** to approve the prompt
+Face ID works on a real iPhone automatically. The app will prompt for Face ID on the auth screen. If your device doesn't support Face ID, tap **"Continue without biometric"** to proceed.
 
 ---
 
