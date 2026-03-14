@@ -11,11 +11,20 @@
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
+    "plugins": [
+      "expo-dev-client"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.lauryn.dashboard",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Use Face ID to securely unlock your dashboard"
+        "NSFaceIDUsageDescription": "Use Face ID to securely unlock your dashboard",
+        "NSHealthShareUsageDescription": "Read health data (steps, HRV, sleep, heart rate) to calculate your daily Readiness Score and personalise workout recommendations.",
+        "NSHealthUpdateUsageDescription": "Write workout data back to Apple Health to keep your fitness history in sync."
+      },
+      "entitlements": {
+        "com.apple.developer.healthkit": true,
+        "com.apple.developer.healthkit.access": []
       }
     },
     "android": {

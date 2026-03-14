@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
+import HealthPage from './pages/HealthPage'
+import WorkoutPage from './pages/WorkoutPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -18,6 +20,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/health"
+          element={
+            <ProtectedRoute>
+              <HealthPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workouts"
+          element={
+            <ProtectedRoute>
+              <WorkoutPage />
             </ProtectedRoute>
           }
         />

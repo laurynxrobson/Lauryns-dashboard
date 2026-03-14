@@ -3,6 +3,7 @@ import { useHabitStore } from '../store/habitStore'
 import { useAuthStore } from '../store/authStore'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import HabitBoard from '../components/habits/HabitBoard'
+import ReadinessCard from '../components/health/ReadinessCard'
 import { format } from 'date-fns'
 
 export default function DashboardPage() {
@@ -46,6 +47,11 @@ export default function DashboardPage() {
               {completedToday} of {habits.length} habits done today
             </p>
           )}
+        </div>
+
+        {/* Readiness Widget */}
+        <div className="mb-6">
+          <ReadinessCard />
         </div>
 
         {/* Section title */}

@@ -4,7 +4,9 @@ import { useAuthStore } from '../../store/authStore'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: '⊞', path: '/dashboard' },
-  { label: 'Habits', icon: '◎', path: '/dashboard' },
+  { label: 'Habits',    icon: '◎', path: '/dashboard' },
+  { label: 'Health',    icon: '〰️', path: '/health' },
+  { label: 'Workouts',  icon: '🏋️', path: '/workouts' },
 ]
 
 export default function Sidebar() {
