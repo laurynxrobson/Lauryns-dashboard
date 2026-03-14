@@ -115,7 +115,7 @@ export default function FinancePage() {
               <button
                 onClick={handleConnectBank}
                 disabled={isLoading}
-                className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-text-primary text-white hover:opacity-90 disabled:opacity-50 transition-opacity"
+                className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-text-primary text-surface hover:opacity-90 disabled:opacity-50 transition-opacity"
               >
                 {isLoading ? 'Connecting…' : 'Connect Bank'}
               </button>
@@ -229,7 +229,7 @@ export default function FinancePage() {
                     onClick={() => setTxFilter(f)}
                     className={`text-xs px-2.5 py-1 rounded-full capitalize transition-colors ${
                       txFilter === f
-                        ? 'bg-text-primary text-white'
+                        ? 'bg-text-primary text-surface'
                         : 'text-text-secondary hover:bg-muted'
                     }`}
                   >
@@ -262,7 +262,7 @@ export default function FinancePage() {
             </p>
             <button
               onClick={handleConnectBank}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-text-primary text-white hover:opacity-90 transition-opacity"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-text-primary text-surface hover:opacity-90 transition-opacity"
             >
               Connect Bank Account
             </button>
@@ -354,7 +354,7 @@ export default function FinancePage() {
               </button>
               <button
                 onClick={handleAddGoal}
-                className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-text-primary text-white hover:opacity-90"
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-text-primary text-surface hover:opacity-90"
               >
                 Add Goal
               </button>

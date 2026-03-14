@@ -229,7 +229,7 @@ export default function AIAdvisorPage() {
               <button
                 onClick={() => sendMessage(input)}
                 disabled={!input.trim()}
-                className="w-10 h-10 rounded-xl bg-text-primary text-white hover:opacity-90 disabled:opacity-30 transition-opacity flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 rounded-xl bg-text-primary text-surface hover:opacity-90 disabled:opacity-30 transition-opacity flex items-center justify-center flex-shrink-0"
               >
                 ↑
               </button>

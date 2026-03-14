@@ -68,7 +68,7 @@ export default function ChatBubble({ message, isStreaming }: Props) {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
           isUser
-            ? 'bg-text-primary text-white rounded-tr-sm'
+            ? 'bg-text-primary text-surface rounded-tr-sm'
             : 'bg-card border border-border text-text-primary rounded-tl-sm'
         }`}
       >
@@ -82,7 +82,7 @@ export default function ChatBubble({ message, isStreaming }: Props) {
             )}
           </div>
         )}
-        <div className={`text-xs mt-1.5 ${isUser ? 'text-white/60' : 'text-text-secondary'}`}>
+        <div className={`text-xs mt-1.5 ${isUser ? 'text-surface/60' : 'text-text-secondary'}`}>
           {format(parseISO(message.timestamp), 'h:mm a')}
         </div>
       </div>

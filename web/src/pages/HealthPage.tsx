@@ -171,7 +171,7 @@ export default function HealthPage() {
           className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors ${
             saved
               ? 'bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30'
-              : 'bg-text-primary text-white hover:opacity-90'
+              : 'bg-text-primary text-surface hover:opacity-90'
           }`}
         >
           {saved ? '✓ Saved' : 'Save Metrics'}
