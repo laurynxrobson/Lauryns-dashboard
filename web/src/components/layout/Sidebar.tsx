@@ -46,7 +46,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-2">
+      <nav className="flex-1 py-2 flex flex-col gap-1">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.path + item.label}
