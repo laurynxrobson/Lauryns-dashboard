@@ -184,8 +184,8 @@ router.post('/recommend', async (req: Request, res: Response) => {
   try {
     const stream = client!.messages.stream({
       model: 'claude-opus-4-6',
-      max_tokens: 1024,
-      thinking: { type: 'adaptive' },
+      max_tokens: 8000,
+      thinking: { type: 'enabled', budget_tokens: 5000 },
       system: systemPrompt,
       messages: apiMessages,
     })
@@ -203,7 +203,8 @@ router.post('/recommend', async (req: Request, res: Response) => {
     } else if (err instanceof Anthropic.AuthenticationError) {
       sendEvent({ type: 'error', message: 'Invalid API key. Check ANTHROPIC_API_KEY in server/.env' })
     } else {
-      sendEvent({ type: 'error', message: 'AI service unavailable. Please try again.' })
+      const detail = err instanceof Error ? err.message : 'Unknown error'
+      sendEvent({ type: 'error', message: `AI service unavailable: ${detail}` })
     }
     res.end()
   }
