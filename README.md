@@ -65,7 +65,7 @@ The server runs in **mock mode** automatically if no API keys are set — the UI
 
 | Variable | Where to get it | Required for |
 |---|---|---|
-| `STITCH_CLIENT_ID` | [stitch.money/developers](https://stitch.money/developers) (free sandbox) | Real SA bank sync |
+| `STITCH_CLIENT_ID` | [docs.stitch.money](https://docs.stitch.money/) (free sandbox) | Real SA bank sync |
 | `STITCH_CLIENT_SECRET` | Stitch dashboard → App Settings → Credentials | Real SA bank sync |
 | `STITCH_REDIRECT_URI` | Must match a URI registered in your Stitch app | Real SA bank sync |
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) | Real AI responses |
