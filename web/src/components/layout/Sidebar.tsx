@@ -7,6 +7,8 @@ const NAV_ITEMS = [
   { label: 'Habits',    icon: '◎', path: '/dashboard' },
   { label: 'Health',    icon: '〰️', path: '/health' },
   { label: 'Workouts',  icon: '🏋️', path: '/workouts' },
+  { label: 'Finance',   icon: '💰', path: '/finance' },
+  { label: 'AI Advisor', icon: '✦', path: '/ai' },
 ]
 
 export default function Sidebar() {

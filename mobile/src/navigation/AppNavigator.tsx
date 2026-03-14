@@ -8,6 +8,8 @@ import HealthScreen from '../screens/HealthScreen'
 import ReadinessScreen from '../screens/ReadinessScreen'
 import WorkoutScreen from '../screens/WorkoutScreen'
 import WorkoutLogScreen from '../screens/WorkoutLogScreen'
+import FinanceScreen from '../screens/FinanceScreen'
+import AIAdvisorScreen from '../screens/AIAdvisorScreen'
 
 // ─── type definitions ─────────────────────────────────────────────────────────
 
@@ -20,6 +22,8 @@ export type MainTabParamList = {
   Habits: undefined
   Health: undefined
   Workouts: undefined
+  Finance: undefined
+  'AI Coach': undefined
 }
 
 export type HealthStackParamList = {
@@ -32,10 +36,10 @@ export type WorkoutStackParamList = {
   WorkoutLog: { workoutId: string }
 }
 
-// ─── navigators ───────────────────────────────────────────────────────────────
+// ─── nested navigators ────────────────────────────────────────────────────────
 
-const Root = createStackNavigator<RootStackParamList>()
-const Tab = createBottomTabNavigator<MainTabParamList>()
+const Root        = createStackNavigator<RootStackParamList>()
+const Tab         = createBottomTabNavigator<MainTabParamList>()
 const HealthStack = createStackNavigator<HealthStackParamList>()
 const WorkoutStack = createStackNavigator<WorkoutStackParamList>()
 
@@ -57,11 +61,15 @@ function WorkoutNavigator() {
   )
 }
 
+// ─── tab icon ─────────────────────────────────────────────────────────────────
+
 function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   const icons: Record<string, string> = {
-    Habits: '◎',
-    Health: '〰️',
-    Workouts: '🏋️',
+    Habits:     '◎',
+    Health:     '〰️',
+    Workouts:   '🏋️',
+    Finance:    '💰',
+    'AI Coach': '✦',
   }
   return (
     <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.4 }}>
@@ -70,13 +78,15 @@ function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   )
 }
 
+// ─── main tabs ────────────────────────────────────────────────────────────────
+
 function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarLabelStyle: { fontSize: 10, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 9, fontWeight: '600' },
         tabBarActiveTintColor: '#111827',
         tabBarInactiveTintColor: '#9CA3AF',
         tabBarStyle: {
@@ -91,14 +101,16 @@ function MainTabs() {
         ),
       })}
     >
-      <Tab.Screen name="Habits" component={HabitsScreen} />
-      <Tab.Screen name="Health" component={HealthNavigator} />
-      <Tab.Screen name="Workouts" component={WorkoutNavigator} />
+      <Tab.Screen name="Habits"    component={HabitsScreen} />
+      <Tab.Screen name="Health"    component={HealthNavigator} />
+      <Tab.Screen name="Workouts"  component={WorkoutNavigator} />
+      <Tab.Screen name="Finance"   component={FinanceScreen} />
+      <Tab.Screen name="AI Coach"  component={AIAdvisorScreen} />
     </Tab.Navigator>
   )
 }
 
-// ─── root navigator ───────────────────────────────────────────────────────────
+// ─── root ─────────────────────────────────────────────────────────────────────
 
 export default function AppNavigator() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)

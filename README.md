@@ -4,8 +4,9 @@ A high-security, unified personal dashboard for habits, finances, and fitness. N
 
 ---
 
-## Features (Phase 1)
+## Features
 
+### Phase 1 ✅ — Core UI Shell & Local Habit Tracking
 - **Habit tracking** — Create, delete, and drag-to-reorder habit blocks
 - **GitHub-style heatmaps** — 365-day contribution graph per habit
 - **Streak engine** — Current and longest streak calculation
@@ -13,54 +14,80 @@ A high-security, unified personal dashboard for habits, finances, and fitness. N
 - **Auth shell** — OAuth 2.0 + JWT structure with Face ID placeholder
 - **Local persistence** — All data stored in localStorage (web) / AsyncStorage (iOS)
 
+### Phase 2 ✅ — Apple HealthKit Integration & Readiness Algorithm
+- **HealthKit sync** — Steps, HRV, resting HR, sleep, and active calories (requires dev build)
+- **Readiness Score** — 0–100 daily score: HRV (40%) + Sleep (40%) + Activity (20%)
+- **Workout Library** — Log exercises, sets, reps, and weight per session
+- **Recommendation engine** — Rule-based workout suggestions per readiness tier
+
+### Phase 3 ✅ — Plaid Financial Sync & Savings Dashboard
+- **Plaid Link** — Connect any bank account in sandbox or production
+- **Account balances** — Live checking and savings balances
+- **Transaction feed** — Categorised transactions with merchant names
+- **Spending breakdown** — Visual category bars (Food, Transport, Entertainment, etc.)
+- **Savings Goals** — Set targets with deadlines and track progress
+
+### Phase 4 ✅ — AI-driven Coaching (Claude Opus 4.6)
+- **AI Advisor** — Chat interface powered by Claude Opus 4.6 with adaptive thinking
+- **Live context** — Health metrics, workout history, and habits injected into every prompt
+- **Streaming** — Real-time response rendering via SSE
+- **Suggested prompts** — Pre-built coaching questions for quick interaction
+
 ---
 
 ## Project Structure
 
 ```
 Lauryns-dashboard-/
+├── server/   # Node.js/Express backend (Plaid + Claude API)
 ├── web/      # React + Vite + Tailwind CSS
 └── mobile/   # React Native + Expo
 ```
 
 ---
 
-## Running the Web App
+## Quick Start
 
-### Prerequisites
-- Node.js 18+
-- npm 9+
+### 1. Backend Server (required for Phase 3 & 4)
 
-### Setup & Start
+```bash
+cd server
+npm install
+cp .env.example .env   # fill in your keys (see below)
+npm run dev            # runs on http://localhost:3001
+```
+
+The server runs in **mock mode** automatically if no API keys are set — the UI is fully functional with demo data.
+
+#### Environment Variables (`server/.env`)
+
+| Variable | Where to get it | Required for |
+|---|---|---|
+| `PLAID_CLIENT_ID` | [dashboard.plaid.com](https://dashboard.plaid.com) (free sandbox) | Real bank sync |
+| `PLAID_SECRET` | Plaid dashboard → Team → Keys → Sandbox secret | Real bank sync |
+| `PLAID_ENV` | `sandbox` (default) or `development` | Real bank sync |
+| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) | Real AI responses |
+
+> Without keys, the server returns realistic mock data for Plaid and a canned response for AI — everything still renders correctly.
+
+#### Plaid Sandbox Test Credentials
+When using sandbox mode, use these test credentials in the Plaid Link flow:
+- **Username:** `user_good`
+- **Password:** `pass_good`
+
+### 2. Web App
 
 ```bash
 cd web
 npm install
-npm run dev
+npm run dev   # http://localhost:5173
 ```
 
-The app will be available at **http://localhost:5173**.
+> The web app calls `http://localhost:3001` by default. Set `VITE_API_URL` in `web/.env` to override.
 
-### Production Build
+### 3. iOS App (Expo Go)
 
-```bash
-cd web
-npm run build       # outputs to web/dist/
-npm run preview     # serve the production build locally
-```
-
----
-
-## Running the iOS App
-
-> **Windows users:** Xcode is Mac-only, so iOS Simulator is not available. Use a physical iPhone with the Expo Go app instead — it works on any OS.
-
-### Prerequisites
-- Node.js 18+
-- **Expo Go** app installed on your iPhone (free on the App Store)
-- Your iPhone and Windows PC on the **same Wi-Fi network**
-
-### Setup & Start
+> **Windows users:** Xcode is Mac-only. Use a physical iPhone with Expo Go or build a dev client via EAS.
 
 ```bash
 cd mobile
@@ -68,36 +95,43 @@ npm install
 npx expo start
 ```
 
-This opens the Expo developer tools in your terminal and displays a QR code.
+Scan the QR code with your iPhone Camera app to open in Expo Go.
 
-**To open on your iPhone:**
-1. Open the Camera app and point it at the QR code
-2. Tap the banner that appears — this launches the app in Expo Go
+> **For Phase 2 HealthKit features:** Expo Go does not support native modules. Build a development client via EAS:
+> ```bash
+> cd mobile
+> npx eas build --profile development --platform ios
+> ```
+> Install the resulting `.ipa` on your iPhone — it replaces Expo Go and supports HealthKit, Face ID, and all native modules.
 
-> If the QR code doesn't connect, try pressing `w` in the terminal to switch to tunnel mode (`npx expo start --tunnel`), which works even if your PC and phone are on different networks.
+#### Pointing Mobile to the Backend
+By default the mobile app calls `http://localhost:3001`. When testing on a **physical iPhone** on the same Wi-Fi network, replace `localhost` with your PC's local IP:
 
-### Face ID
-
-Face ID works on a real iPhone automatically. The app will prompt for Face ID on the auth screen. If your device doesn't support Face ID, tap **"Continue without biometric"** to proceed.
+```bash
+# In mobile/.env (create if it doesn't exist):
+EXPO_PUBLIC_API_URL=http://192.168.1.XXX:3001
+```
 
 ---
 
 ## Tech Stack
 
-| Layer | Web | iOS |
-|---|---|---|
-| Framework | React 18 + Vite | React Native 0.74 + Expo 51 |
-| Styling | Tailwind CSS | NativeWind |
-| State | Zustand + localStorage | Zustand + AsyncStorage |
-| Drag & Drop | @dnd-kit/core | — |
-| Navigation | React Router v6 | React Navigation v6 |
-| Auth (Phase 1) | Mock OAuth shell | expo-local-authentication |
+| Layer | Web | iOS | Server |
+|---|---|---|---|
+| Framework | React 18 + Vite | React Native 0.74 + Expo 51 | Node.js + Express |
+| Styling | Tailwind CSS | NativeWind | — |
+| State | Zustand + localStorage | Zustand + AsyncStorage | In-memory |
+| Navigation | React Router v6 | React Navigation v6 (bottom tabs) | — |
+| Auth | Mock OAuth shell | expo-local-authentication (Face ID) | — |
+| Health | — | react-native-health (HealthKit) | — |
+| Finance | react-plaid-link | Server API proxy | plaid (Node SDK) |
+| AI | SSE streaming | SSE streaming | @anthropic-ai/sdk (Opus 4.6) |
 
 ---
 
 ## Roadmap
 
 - **Phase 1** ✅ Core UI Shell & Local Habit Tracking
-- **Phase 2** Apple HealthKit Integration & Readiness Algorithm
-- **Phase 3** Plaid Financial Sync & Savings Dashboard
-- **Phase 4** AI-driven Workout Recommendations
+- **Phase 2** ✅ Apple HealthKit Integration & Readiness Algorithm
+- **Phase 3** ✅ Plaid Financial Sync & Savings Dashboard
+- **Phase 4** ✅ AI-driven Coaching with Claude Opus 4.6

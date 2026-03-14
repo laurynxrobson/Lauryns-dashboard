@@ -4,6 +4,8 @@ import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import HealthPage from './pages/HealthPage'
 import WorkoutPage from './pages/WorkoutPage'
+import FinancePage from './pages/FinancePage'
+import AIAdvisorPage from './pages/AIAdvisorPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -36,6 +38,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <WorkoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/finance"
+          element={
+            <ProtectedRoute>
+              <FinancePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ai"
+          element={
+            <ProtectedRoute>
+              <AIAdvisorPage />
             </ProtectedRoute>
           }
         />
