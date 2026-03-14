@@ -89,7 +89,7 @@ function buildSystemPrompt(context: AdvisorContext): string {
 - Steps: ${m.steps ? m.steps.toLocaleString() : 'no data'}
 - Resting Heart Rate: ${m.restingHeartRate ? `${m.restingHeartRate} bpm` : 'no data'}
 - Active Calories: ${m.activeCalories ? `${m.activeCalories} kcal` : 'no data'}`
-    : '## Today's Health Data\nNo data synced yet.'
+    : "## Today's Health Data\nNo data synced yet."
 
   const readinessSection = r
     ? `## Readiness Score
