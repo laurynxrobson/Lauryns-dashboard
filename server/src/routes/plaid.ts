@@ -49,7 +49,7 @@ let storedAccessToken: string | null = null
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
-const MOCK_ACCOUNTS: AccountBase[] = [
+const MOCK_ACCOUNTS: AccountBase[] = ([
   {
     account_id: 'mock_checking_1',
     balances: { available: 4823.17, current: 4823.17, iso_currency_code: 'USD', unofficial_currency_code: null, limit: null },
@@ -72,7 +72,7 @@ const MOCK_ACCOUNTS: AccountBase[] = [
     verification_status: null,
     persistent_account_id: null,
   },
-]
+] as unknown) as AccountBase[]
 
 function isoDate(daysAgo: number): string {
   const d = new Date()
@@ -80,7 +80,7 @@ function isoDate(daysAgo: number): string {
   return d.toISOString().slice(0, 10)
 }
 
-const MOCK_TRANSACTIONS: Transaction[] = [
+const MOCK_TRANSACTIONS: Transaction[] = ([
   { transaction_id: 't1',  account_id: 'mock_checking_1', amount: 67.42,  date: isoDate(1),  name: 'Whole Foods Market',  merchant_name: 'Whole Foods', category: ['Food and Drink', 'Groceries'], category_id: '19047000', iso_currency_code: 'USD', pending: false, payment_channel: 'in store' as any, personal_finance_category: { primary: 'FOOD_AND_DRINK', detailed: 'FOOD_AND_DRINK_GROCERY', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(1), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'place' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
   { transaction_id: 't2',  account_id: 'mock_checking_1', amount: 4.50,   date: isoDate(1),  name: 'Starbucks',             merchant_name: 'Starbucks',   category: ['Food and Drink', 'Coffee Shop'], category_id: '13005043', iso_currency_code: 'USD', pending: false, payment_channel: 'in store' as any, personal_finance_category: { primary: 'FOOD_AND_DRINK', detailed: 'FOOD_AND_DRINK_COFFEE', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(1), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'place' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
   { transaction_id: 't3',  account_id: 'mock_checking_1', amount: 12.99,  date: isoDate(2),  name: 'Netflix',               merchant_name: 'Netflix',     category: ['Recreation', 'Gyms and Fitness Centers'], category_id: '17018000', iso_currency_code: 'USD', pending: false, payment_channel: 'online' as any, personal_finance_category: { primary: 'ENTERTAINMENT', detailed: 'ENTERTAINMENT_STREAMING', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(2), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'digital' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
@@ -93,7 +93,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
   { transaction_id: 't10', account_id: 'mock_checking_1', amount: 15.99,  date: isoDate(9),  name: 'Spotify',               merchant_name: 'Spotify',     category: ['Service', 'Subscription'], category_id: '22015000', iso_currency_code: 'USD', pending: false, payment_channel: 'online' as any, personal_finance_category: { primary: 'ENTERTAINMENT', detailed: 'ENTERTAINMENT_MUSIC', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(9), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'digital' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
   { transaction_id: 't11', account_id: 'mock_checking_1', amount: 9.99,   date: isoDate(10), name: 'Amazon Prime',           merchant_name: 'Amazon',      category: ['Shops', 'Digital Purchase'], category_id: '19002000', iso_currency_code: 'USD', pending: false, payment_channel: 'online' as any, personal_finance_category: { primary: 'GENERAL_MERCHANDISE', detailed: 'GENERAL_MERCHANDISE_ONLINE', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(10), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'digital' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
   { transaction_id: 't12', account_id: 'mock_checking_1', amount: 3500.00,date: isoDate(14), name: 'Direct Deposit',          merchant_name: null,          category: ['Transfer', 'Payroll'], category_id: '21012000', iso_currency_code: 'USD', pending: false, payment_channel: 'online' as any, personal_finance_category: { primary: 'INCOME', detailed: 'INCOME_WAGES', confidence_level: 'HIGH' }, personal_finance_category_icon_url: null, logo_url: null, authorized_date: isoDate(14), authorized_datetime: null, datetime: null, location: null as any, payment_meta: null as any, pending_transaction_id: null, transaction_code: null, transaction_type: 'special' as any, unofficial_currency_code: null, check_number: null, counterparties: [], merchant_entity_id: null, website: null },
-]
+] as unknown) as Transaction[]
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
